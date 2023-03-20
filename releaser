@@ -1,0 +1,25 @@
+#!/bin/bash
+# Bump version of package
+#
+set -eu pipefail
+
+VERSION=$(curl -s 'https://api.github.com/repos/wabarc/wayback/tags?per_page=1' | grep '"name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed -e 's/v//g')
+CHECKSUM="$(curl -sSfL https://github.com/wabarc/wayback/releases/download/v${VERSION}/wayback-${VERSION}-checksums.txt)"
+AMD64_SUM=$(echo "${CHECKSUM}" | grep 'linux-amd64' | awk '{print $1}')
+ARM64_SUM=$(echo "${CHECKSUM}" | grep 'linux-arm64' | awk '{print $1}')
+AMD64_PRE=$(grep sha256 org.eu.wabarc.wayback.yml | head -1 | awk '{print $2}')
+ARM64_PRE=$(grep sha256 org.eu.wabarc.wayback.yml | tail -1 | awk '{print $2}')
+
+echo 'Replace download URI'
+sed -Ei "s/amd64-[0-9]+\.[0-9]+\.[0-9]+/amd64-${VERSION}/g" ./org.eu.wabarc.wayback.yml
+sed -Ei "s/arm64-[0-9]+\.[0-9]+\.[0-9]+/arm64-${VERSION}/g" ./org.eu.wabarc.wayback.yml
+
+echo 'Replace version'
+sed -Ei "s/v[0-9]+\.[0-9]+\.[0-9]+/v${VERSION}/g" ./org.eu.wabarc.wayback.yml
+sed -Ei "s/[0-9]+\.[0-9]+\.[0-9]+/${VERSION}/g" ./org.eu.wabarc.wayback.appdata.xml
+sed -Ei "s/[0-9]+\-[0-9]+\-[0-9]+/$(date +'%Y-%m-%d')/g" ./org.eu.wabarc.wayback.appdata.xml
+
+echo 'Replace digest'
+sed -i "s/${AMD64_PRE}/${AMD64_SUM}/" ./org.eu.wabarc.wayback.yml
+sed -i "s/${ARM64_PRE}/${ARM64_SUM}/" ./org.eu.wabarc.wayback.yml
+
