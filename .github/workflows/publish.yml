@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  repository_dispatch:
+    types:
+      - publish
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out code base
+        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+        with:
+          persist-credentials: false
+
+      - name: Update Manifest
+        shell: bash
+        run: ./releaser
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54 # v4.2.4
+        with:
+          add-paths: 'org.eu.wabarc.wayback.*'
+          commit-message: 'Publish ${{ github.event.client_payload.version }}'
+          branch: 'release/${{ github.event.client_payload.version }}'
+          title: 'Publish ${{ github.event.client_payload.version }}'
+          body: >
+            **The maintainer will need to manually create a pull request to the upstream repository [flathub/org.eu.wabarc.wayback](https://github.com/flathub/org.eu.wabarc.wayback/compare/master...wabarc:org.eu.wabarc.wayback:master?expand=1).**
