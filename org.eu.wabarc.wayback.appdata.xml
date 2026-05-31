@@ -5,7 +5,7 @@
   <name>wayback</name>
   <summary>A self-hosted toolkit for archiving webpages to the Internet Archive, archive.today, IPFS, and local file systems</summary>
 
-  <developer>
+  <developer id="org.eu.wabarc">
     <name>Wayback Archiver</name>
     <email>wabarc@tuta.io</email>
     <url>https://wabarc.eu.org/</url>
