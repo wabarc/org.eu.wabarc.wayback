@@ -20,13 +20,13 @@ modules:
       - install -Dm644 wayback_128x128.png /app/share/icons/hicolor/128x128/apps/org.eu.wabarc.wayback.png
     sources:
       - type: file
-        url: https://github.com/wabarc/wayback/releases/download/v0.20.1/wayback-linux-amd64-0.20.1.tar.gz
-        sha256: e7b1cbe54cc13199724d1777fd6d2d88e6d662b355625c1a18aa1653215e97d9
+        url: https://github.com/wabarc/wayback/releases/download/v0.21.1/wayback-linux-amd64-0.21.1.tar.gz
+        sha256: 830071a31158178a57a8d9424dc5fd700c8900adcea3954da1be948b6c053654
         only-arches:
           - x86_64
       - type: file
-        url: https://github.com/wabarc/wayback/releases/download/v0.20.1/wayback-linux-arm64-0.20.1.tar.gz
-        sha256: c451986fa70bcd8b3b6860372ae27165d91de26ac17dfc57282c2557f5f0fb97
+        url: https://github.com/wabarc/wayback/releases/download/v0.21.1/wayback-linux-arm64-0.21.1.tar.gz
+        sha256: 966f1d1cf8831e88d57cd42a0aa26eb6a1012e3627a3e16bd88fd8e09af6d1c6
         only-arches:
           - aarch64
       - type: file
